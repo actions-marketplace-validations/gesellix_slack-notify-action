@@ -19,11 +19,15 @@ test('wait 500 ms', async () => {
 
 // shows how the runner will run a javascript action with env / stdout protocol
 test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
+  process.env['INPUT_TYPE'] = 'success'
+  process.env['INPUT_JOB_NAME'] = 'test-only'
+  process.env['INPUT_SLACK_TOKEN'] = '_for-test_'
+  process.env['INPUT_CHANNEL'] = '_for-test_'
+  process.env['GITHUB_REPOSITORY'] = 'for/test'
   const np = process.execPath
   const ip = path.join(__dirname, '..', 'lib', 'main.js')
   const options: cp.ExecFileSyncOptions = {
     env: process.env
   }
-  console.log(cp.execFileSync(np, [ip], options).toString())
+  expect(() => cp.execFileSync(np, [ip], options)).toThrow();
 })
